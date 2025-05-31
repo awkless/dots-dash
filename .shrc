@@ -1,0 +1,22 @@
+#!/bin/sh
+# SPDX-FileCopyrightText: 2023-2025 Jason Pena <jasonpena@awkless.com>
+# SPDX-License-Identifier: MIT
+
+# If not in interactive mode, then exit...
+case $- in
+  *i*) ;;
+  *) exit ;;
+esac
+
+# Enable Vi key-bindings, because Vi is great...
+set -o vi
+
+# Setup PS1 using external script dependency if available...
+if [ -f "${XDG_DATA_HOME:-$HOME/.local/share}/polyglot.sh" ]; then
+  # shellcheck source=/dev/null
+  . "${XDG_DATA_HOME:-$HOME/.local/share}/polyglot.sh"
+else
+  echo "could not find polyglot.sh, using default PS1" 2>&1
+  PS1="$(logname)@$(uname -n) $PWD/ \$ "
+  export PS1
+fi
